@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +9,20 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Custom Styles for Interactive Elements & Chart Containers */
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        .nav-active { border-bottom: 2px solid #0f766e; color: #0f766e; font-weight: 600; }
-        .section-hidden { display: none; }
-        
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .nav-active {
+            border-bottom: 2px solid #0f766e;
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .section-hidden {
+            display: none;
+        }
+
         /* Required Chart Container Styling */
         .chart-container {
             position: relative;
@@ -33,6 +44,7 @@
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
+
         .hotspot {
             position: absolute;
             background-color: #0f766e;
@@ -50,19 +62,56 @@
             animation: pulse 2s infinite;
             transition: transform 0.2s;
         }
-        .hotspot:hover { transform: scale(1.2); }
+
+        .hotspot:hover {
+            transform: scale(1.2);
+        }
+
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(15, 118, 110, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(15, 118, 110, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(15, 118, 110, 0);
+            }
         }
 
         /* Traffic Light System */
-        .status-red { border-left: 4px solid #ef4444; }
-        .status-yellow { border-left: 4px solid #f59e0b; }
-        .status-green { border-left: 4px solid #10b981; }
+        .status-red {
+            border-left: 4px solid #ef4444;
+        }
+
+        .status-yellow {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .status-green {
+            border-left: 4px solid #10b981;
+        }
     </style>
+    <!-- Chosen Palette: Warm Neutrals & Deep Teal (Earthy, natural, trustworthy vibe for "Sunnahliebe") -->
+    <!-- Application Structure Plan: 
+         1. Dashboard/Overview: Quick metrics and visual categorization of products based on the meeting notes.
+         2. Rechtslage & Zulassung (Crucial for the user's question): Details on whether products can be sold "without problems". Uses a traffic light system.
+         3. Etiketten-Guide: Interactive visual breakdown of mandatory EU/DACH label elements (Cosmetics vs. General).
+         4. Conversion & Design: Actionable advice on label design to boost sales, incorporating the "minimalist" and "tree logo" notes.
+         5. Action Plan: Checklist based directly on the provided meeting transcript tasks.
+         This structure logically moves from answering the "can I sell this" question to "how to label it" to "next execution steps".
+    -->
+    <!-- Visualization & Content Choices: 
+         - Bar Chart (Chart.js): Shows "Zulassungsaufwand" (Regulatory Effort). Goal: Inform & Compare. Justification: Quickly visualizes that a horn comb is easier to launch than salt soap.
+         - Doughnut Chart (Chart.js): Product categories. Goal: Organize. Justification: Shows the split between Cosmetics, Food, and Consumer Goods, which dictate the law.
+         - Interactive Label Mockup (HTML/CSS/JS): Clickable hotspots on a CSS-drawn label. Goal: Educate. Justification: Much easier to understand label requirements visually than reading a block of text.
+         - Traffic Light Cards (HTML/CSS): For product compliance status. Goal: Inform/Warn. Justification: Clearly highlights products that need certificates (like CPNP for soaps) vs. easy wins.
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. Visuals are HTML/CSS and Canvas-based.
+    -->
 </head>
+
 <body class="bg-stone-50 text-stone-800 antialiased">
 
     <!-- Header -->
@@ -74,11 +123,20 @@
                     <span class="font-bold text-xl tracking-tight text-teal-900">Sunnahliebe Launch-Cockpit</span>
                 </div>
                 <nav class="hidden md:flex space-x-8">
-                    <button onclick="nav('dashboard')" id="nav-dashboard" class="nav-btn nav-active text-sm font-medium hover:text-teal-600 pb-1">Übersicht</button>
-                    <button onclick="nav('compliance')" id="nav-compliance" class="nav-btn text-sm font-medium text-gray-500 hover:text-teal-600 pb-1">Verkaufbarkeit & Recht</button>
-                    <button onclick="nav('labels')" id="nav-labels" class="nav-btn text-sm font-medium text-gray-500 hover:text-teal-600 pb-1">EU Etiketten-Guide</button>
-                    <button onclick="nav('conversion')" id="nav-conversion" class="nav-btn text-sm font-medium text-gray-500 hover:text-teal-600 pb-1">Conversion & Design</button>
-                    <button onclick="nav('tasks')" id="nav-tasks" class="nav-btn text-sm font-medium text-gray-500 hover:text-teal-600 pb-1">Nächste Schritte</button>
+                    <button onclick="nav('dashboard')" id="nav-dashboard"
+                        class="nav-btn nav-active text-sm font-medium hover:text-teal-600 pb-1">Übersicht</button>
+                    <button onclick="nav('compliance')" id="nav-compliance"
+                        class="nav-btn text-sm font-medium text-gray-500 hover:text-teal-600 pb-1">Verkaufbarkeit &
+                        Recht</button>
+                    <button onclick="nav('labels')" id="nav-labels"
+                        class="nav-btn text-sm font-medium text-gray-500 hover:text-teal-600 pb-1">EU
+                        Etiketten-Guide</button>
+                    <button onclick="nav('conversion')" id="nav-conversion"
+                        class="nav-btn text-sm font-medium text-gray-500 hover:text-teal-600 pb-1">Conversion &
+                        Design</button>
+                    <button onclick="nav('tasks')" id="nav-tasks"
+                        class="nav-btn text-sm font-medium text-gray-500 hover:text-teal-600 pb-1">Nächste
+                        Schritte</button>
                 </nav>
                 <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center">
@@ -92,9 +150,11 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 p-4">
             <div class="flex flex-col space-y-3">
                 <button onclick="nav('dashboard')" class="text-left font-medium text-teal-700">Übersicht</button>
-                <button onclick="nav('compliance')" class="text-left font-medium text-gray-600">Verkaufbarkeit & Recht</button>
+                <button onclick="nav('compliance')" class="text-left font-medium text-gray-600">Verkaufbarkeit &
+                    Recht</button>
                 <button onclick="nav('labels')" class="text-left font-medium text-gray-600">EU Etiketten-Guide</button>
-                <button onclick="nav('conversion')" class="text-left font-medium text-gray-600">Conversion & Design</button>
+                <button onclick="nav('conversion')" class="text-left font-medium text-gray-600">Conversion &
+                    Design</button>
                 <button onclick="nav('tasks')" class="text-left font-medium text-gray-600">Nächste Schritte</button>
             </div>
         </div>
@@ -106,19 +166,23 @@
         <section id="sec-dashboard" class="content-section animate-fade-in">
             <div class="mb-8">
                 <h1 class="text-3xl font-extrabold text-stone-900">Projektübersicht: Schneller Marktstart</h1>
-                <p class="mt-2 text-lg text-stone-600">Analyse der in der Besprechung (05.03.2026) genannten Produkte, um Verzögerungen bei Seifen/Cremes zu umgehen.</p>
+                <p class="mt-2 text-lg text-stone-600">Analyse der in der Besprechung (05.03.2026) genannten Produkte,
+                    um Verzögerungen bei Seifen/Cremes zu umgehen.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 flex flex-col justify-center items-center">
+                <div
+                    class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 flex flex-col justify-center items-center">
                     <span class="text-4xl text-teal-600 font-black">7</span>
                     <span class="text-sm text-stone-500 mt-1 uppercase tracking-wider">Geplante Produkte</span>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 flex flex-col justify-center items-center">
+                <div
+                    class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 flex flex-col justify-center items-center">
                     <span class="text-4xl text-amber-500 font-black">3</span>
                     <span class="text-sm text-stone-500 mt-1 uppercase tracking-wider">Rechtskategorien</span>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 flex flex-col justify-center items-center">
+                <div
+                    class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 flex flex-col justify-center items-center">
                     <span class="text-4xl text-blue-600 font-black">4</span>
                     <span class="text-sm text-stone-500 mt-1 uppercase tracking-wider">Beschaffungsländer</span>
                 </div>
@@ -127,14 +191,16 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                     <h3 class="text-lg font-bold text-stone-800 mb-4">Aufwand für Marktzulassung (DE/EU)</h3>
-                    <p class="text-sm text-stone-500 mb-4">Ein niedriger Wert bedeutet, das Produkt kann (fast) sofort und "ohne Probleme" verkauft werden. Hohe Werte erfordern Zertifikate.</p>
+                    <p class="text-sm text-stone-500 mb-4">Ein niedriger Wert bedeutet, das Produkt kann (fast) sofort
+                        und "ohne Probleme" verkauft werden. Hohe Werte erfordern Zertifikate.</p>
                     <div class="chart-container">
                         <canvas id="effortChart"></canvas>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                     <h3 class="text-lg font-bold text-stone-800 mb-4">Produktverteilung nach Rechtsgebiet</h3>
-                    <p class="text-sm text-stone-500 mb-4">Das Rechtsgebiet entscheidet, was zwingend auf dem Etikett stehen muss.</p>
+                    <p class="text-sm text-stone-500 mb-4">Das Rechtsgebiet entscheidet, was zwingend auf dem Etikett
+                        stehen muss.</p>
                     <div class="chart-container">
                         <canvas id="categoryChart"></canvas>
                     </div>
@@ -146,7 +212,9 @@
         <section id="sec-compliance" class="content-section section-hidden animate-fade-in">
             <div class="mb-8">
                 <h2 class="text-3xl font-extrabold text-stone-900">Darf man diese Produkte ohne Probleme verkaufen?</h2>
-                <p class="mt-2 text-lg text-stone-600">Kurze Antwort: <strong>Nein, nicht alle.</strong> Wer Kosmetik in die EU importiert (z.B. aus der Türkei oder Marokko), gilt rechtlich als <strong>Hersteller</strong> und haftet voll. Hier ist die genaue Analyse eurer Liste.</p>
+                <p class="mt-2 text-lg text-stone-600">Kurze Antwort: <strong>Nein, nicht alle.</strong> Wer Kosmetik in
+                    die EU importiert (z.B. aus der Türkei oder Marokko), gilt rechtlich als <strong>Hersteller</strong>
+                    und haftet voll. Hier ist die genaue Analyse eurer Liste.</p>
             </div>
 
             <div class="space-y-4" id="product-compliance-list">
@@ -161,7 +229,11 @@
                     <div class="ml-3">
                         <h3 class="text-amber-800 font-bold">Wichtiges Fazit für den schnellen Start</h3>
                         <p class="text-amber-700 text-sm mt-1">
-                            Wenn ihr den Shop schnell eröffnen wollt, startet mit dem <strong>Hornkamm</strong> und eventuell dem <strong>Misk</strong> (sofern der deutsche Hersteller die CPNP-Meldung schon gemacht hat und ihr es nur vertreibt). Für <strong>Öle und Seifen aus der Türkei</strong> müsst ihr zwingend erst eine Sicherheitsbewertung durch einen Chemiker erstellen lassen, bevor ihr sie in Deutschland auf den Markt bringt.
+                            Wenn ihr den Shop schnell eröffnen wollt, startet mit dem <strong>Hornkamm</strong> und
+                            eventuell dem <strong>Misk</strong> (sofern der deutsche Hersteller die CPNP-Meldung schon
+                            gemacht hat und ihr es nur vertreibt). Für <strong>Öle und Seifen aus der Türkei</strong>
+                            müsst ihr zwingend erst eine Sicherheitsbewertung durch einen Chemiker erstellen lassen,
+                            bevor ihr sie in Deutschland auf den Markt bringt.
                         </p>
                     </div>
                 </div>
@@ -172,7 +244,9 @@
         <section id="sec-labels" class="content-section section-hidden animate-fade-in">
             <div class="mb-8">
                 <h2 class="text-3xl font-extrabold text-stone-900">EU-Etiketten Vorgaben (DE & AT)</h2>
-                <p class="mt-2 text-lg text-stone-600">Was muss rechtlich zwingend auf die Verpackung? Die Vorgaben sind für Deutschland und Österreich (EU-Recht) identisch. Klicke auf die roten Punkte für Erklärungen.</p>
+                <p class="mt-2 text-lg text-stone-600">Was muss rechtlich zwingend auf die Verpackung? Die Vorgaben sind
+                    für Deutschland und Österreich (EU-Recht) identisch. Klicke auf die roten Punkte für Erklärungen.
+                </p>
             </div>
 
             <div class="flex flex-col md:flex-row gap-8">
@@ -181,24 +255,34 @@
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                         <h3 class="text-xl font-bold mb-4">Interaktives Muster-Etikett (Kosmetik)</h3>
                         <p class="text-sm text-stone-500 mb-6">Beispiel für: Sidröl, Misk, Salzseife.</p>
-                        
+
                         <div class="label-mockup flex flex-col items-center text-center space-y-4">
                             <!-- Hotspots -->
-                            <div class="hotspot" style="top: 10px; left: 10px;" onclick="showLabelInfo('verantwortlicher')">1</div>
-                            <div class="hotspot" style="top: 10px; right: 10px;" onclick="showLabelInfo('nenninhalt')">2</div>
-                            <div class="hotspot" style="bottom: 70px; right: 10px;" onclick="showLabelInfo('mhd')">3</div>
+                            <div class="hotspot" style="top: 10px; left: 10px;"
+                                onclick="showLabelInfo('verantwortlicher')">1</div>
+                            <div class="hotspot" style="top: 10px; right: 10px;" onclick="showLabelInfo('nenninhalt')">2
+                            </div>
+                            <div class="hotspot" style="bottom: 70px; right: 10px;" onclick="showLabelInfo('mhd')">3
+                            </div>
                             <div class="hotspot" style="top: 50%; left: 10px;" onclick="showLabelInfo('zweck')">4</div>
-                            <div class="hotspot" style="bottom: 10px; left: 10px;" onclick="showLabelInfo('inci')">5</div>
-                            <div class="hotspot" style="bottom: 10px; right: 80px;" onclick="showLabelInfo('charge')">6</div>
+                            <div class="hotspot" style="bottom: 10px; left: 10px;" onclick="showLabelInfo('inci')">5
+                            </div>
+                            <div class="hotspot" style="bottom: 10px; right: 80px;" onclick="showLabelInfo('charge')">6
+                            </div>
 
-                            <div class="w-16 h-16 bg-stone-200 rounded-full flex items-center justify-center text-2xl mb-2">🌳</div>
+                            <div
+                                class="w-16 h-16 bg-stone-200 rounded-full flex items-center justify-center text-2xl mb-2">
+                                🌳</div>
                             <h4 class="font-bold text-lg uppercase tracking-widest text-stone-800">Sunnahliebe</h4>
                             <div class="text-2xl font-serif text-teal-800">Reines Sidröl</div>
-                            <p class="text-xs text-stone-500 px-4">Zur Pflege von Haut und Haar. Nicht einnehmen. Kontakt mit Augen vermeiden.</p>
-                            
-                            <div class="w-full border-t border-stone-200 pt-4 mt-4 flex justify-between text-[10px] text-stone-500 text-left">
+                            <p class="text-xs text-stone-500 px-4">Zur Pflege von Haut und Haar. Nicht einnehmen.
+                                Kontakt mit Augen vermeiden.</p>
+
+                            <div
+                                class="w-full border-t border-stone-200 pt-4 mt-4 flex justify-between text-[10px] text-stone-500 text-left">
                                 <div class="w-2/3">
-                                    <strong>Ingredients (INCI):</strong> Ziziphus Spina-Christi Leaf Extract, Olea Europaea Fruit Oil.<br>
+                                    <strong>Ingredients (INCI):</strong> Ziziphus Spina-Christi Leaf Extract, Olea
+                                    Europaea Fruit Oil.<br>
                                     Sunnahliebe GmbH, Musterstraße 1, 10115 Berlin, Deutschland.
                                 </div>
                                 <div class="w-1/3 text-right flex flex-col items-end justify-end">
@@ -222,10 +306,14 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="mt-8 bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                 <h3 class="font-bold text-lg mb-2">Sprachliche Vorgaben für DACH</h3>
-                <p class="text-stone-600 text-sm">Für den Verkauf in Deutschland und Österreich müssen <strong>Warnhinweise und der Verwendungszweck zwingend in deutscher Sprache</strong> aufgedruckt sein. Die INCI-Liste (Inhaltsstoffe) muss nach internationaler Nomenklatur (meist lateinisch/englisch) erfolgen. Ein "Beipackzettel" reicht nur, wenn das Produkt für das Etikett zu klein ist (dann Symbol: Hand in aufgeschlagenem Buch).</p>
+                <p class="text-stone-600 text-sm">Für den Verkauf in Deutschland und Österreich müssen
+                    <strong>Warnhinweise und der Verwendungszweck zwingend in deutscher Sprache</strong> aufgedruckt
+                    sein. Die INCI-Liste (Inhaltsstoffe) muss nach internationaler Nomenklatur (meist
+                    lateinisch/englisch) erfolgen. Ein "Beipackzettel" reicht nur, wenn das Produkt für das Etikett zu
+                    klein ist (dann Symbol: Hand in aufgeschlagenem Buch).</p>
             </div>
         </section>
 
@@ -233,7 +321,9 @@
         <section id="sec-conversion" class="content-section section-hidden animate-fade-in">
             <div class="mb-8">
                 <h2 class="text-3xl font-extrabold text-stone-900">Etiketten-Design für maximale Conversion</h2>
-                <p class="mt-2 text-lg text-stone-600">Wie besprochen: Eine minimalistische Ästhetik und das runderneuerte Baum-Logo bilden die Basis. Hier sind verkaufspsychologische Hebel für eure Verpackungen.</p>
+                <p class="mt-2 text-lg text-stone-600">Wie besprochen: Eine minimalistische Ästhetik und das
+                    runderneuerte Baum-Logo bilden die Basis. Hier sind verkaufspsychologische Hebel für eure
+                    Verpackungen.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -241,81 +331,116 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                     <div class="text-3xl mb-4">✨</div>
                     <h3 class="text-xl font-bold mb-2">1. Minimalismus als Premium-Signal</h3>
-                    <p class="text-stone-600 text-sm">Weniger ist mehr. Nutzt viel "Whitespace" (leere Flächen). Das signalisiert Reinheit und hochwertige Qualität. Verzichtet auf grelle Farben, bleibt bei eurer warmen, natürlichen Palette. Bogachans Ansatz für minimalistisches Design ist hier goldrichtig.</p>
+                    <p class="text-stone-600 text-sm">Weniger ist mehr. Nutzt viel "Whitespace" (leere Flächen). Das
+                        signalisiert Reinheit und hochwertige Qualität. Verzichtet auf grelle Farben, bleibt bei eurer
+                        warmen, natürlichen Palette. Bogachans Ansatz für minimalistisches Design ist hier goldrichtig.
+                    </p>
                 </div>
                 <!-- Tip 2 -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                     <div class="text-3xl mb-4">🛡️</div>
                     <h3 class="text-xl font-bold mb-2">2. Trust-Badges (Vertrauenssymbole)</h3>
-                    <p class="text-stone-600 text-sm">Kunden, besonders im Kosmetik- und Sunnah-Bereich, achten auf Inhaltsstoffe. Integriert kleine, elegante Icons auf der Vorderseite: <br><br>
-                    <strong>✓ 100% Naturrein<br>✓ Vegan<br>✓ Ohne Zusatzstoffe</strong></p>
+                    <p class="text-stone-600 text-sm">Kunden, besonders im Kosmetik- und Sunnah-Bereich, achten auf
+                        Inhaltsstoffe. Integriert kleine, elegante Icons auf der Vorderseite: <br><br>
+                        <strong>✓ 100% Naturrein<br>✓ Vegan<br>✓ Ohne Zusatzstoffe</strong>
+                    </p>
                 </div>
                 <!-- Tip 3 -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                     <div class="text-3xl mb-4">📖</div>
                     <h3 class="text-xl font-bold mb-2">3. Die "Story" & der Nutzen</h3>
-                    <p class="text-stone-600 text-sm">Die Inhaltsstoffe stehen hinten. Vorn muss der <strong>Nutzen</strong> stehen. Statt nur "Sidröl", ergänzt einen Untertitel wie <em>"Für gekräftigtes Haar & reine Haut"</em>. Das erhöht die Conversion Rate enorm, da der Kunde sofort sein Problem gelöst sieht.</p>
+                    <p class="text-stone-600 text-sm">Die Inhaltsstoffe stehen hinten. Vorn muss der
+                        <strong>Nutzen</strong> stehen. Statt nur "Sidröl", ergänzt einen Untertitel wie <em>"Für
+                            gekräftigtes Haar & reine Haut"</em>. Das erhöht die Conversion Rate enorm, da der Kunde
+                        sofort sein Problem gelöst sieht.</p>
                 </div>
                 <!-- Tip 4 -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                     <div class="text-3xl mb-4">🌳</div>
                     <h3 class="text-xl font-bold mb-2">4. Das alte Baum-Logo modernisieren</h3>
-                    <p class="text-stone-600 text-sm">Es war ein guter Beschluss im Meeting, den "runderen" Baum vom alten Design zu übernehmen. Ein Baum symbolisiert Wachstum, Natur und Beständigkeit. Macht ihn als feinen Strichzeichnungs-Druck (vielleicht in Gold- oder Kupferfolie veredelt) zum Mittelpunkt der Verpackung.</p>
+                    <p class="text-stone-600 text-sm">Es war ein guter Beschluss im Meeting, den "runderen" Baum vom
+                        alten Design zu übernehmen. Ein Baum symbolisiert Wachstum, Natur und Beständigkeit. Macht ihn
+                        als feinen Strichzeichnungs-Druck (vielleicht in Gold- oder Kupferfolie veredelt) zum
+                        Mittelpunkt der Verpackung.</p>
                 </div>
             </div>
         </section>
 
         <!-- SECTION 5: TASKS & NEXT STEPS -->
         <section id="sec-tasks" class="content-section section-hidden animate-fade-in">
-             <div class="mb-8">
+            <div class="mb-8">
                 <h2 class="text-3xl font-extrabold text-stone-900">Aktionsplan & Nächste Schritte</h2>
-                <p class="mt-2 text-lg text-stone-600">Zusammenfassung der Aufgaben aus eurer Besprechung, strukturiert in eine interaktive Checkliste.</p>
+                <p class="mt-2 text-lg text-stone-600">Zusammenfassung der Aufgaben aus eurer Besprechung, strukturiert
+                    in eine interaktive Checkliste.</p>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden">
                 <div class="p-6 border-b border-stone-100 bg-stone-50 flex justify-between items-center">
                     <h3 class="font-bold text-lg">To-Do Liste (Stand: 05.03.2026)</h3>
-                    <span class="text-sm font-medium text-teal-600 bg-teal-100 px-3 py-1 rounded-full" id="task-counter">0/6 Erledigt</span>
+                    <span class="text-sm font-medium text-teal-600 bg-teal-100 px-3 py-1 rounded-full"
+                        id="task-counter">0/6 Erledigt</span>
                 </div>
                 <div class="p-0">
                     <ul class="divide-y divide-stone-100" id="checklist">
-                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition" onclick="toggleTask(this)">
-                            <div class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">✓</div>
+                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition"
+                            onclick="toggleTask(this)">
+                            <div
+                                class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">
+                                ✓</div>
                             <div>
                                 <p class="font-bold text-stone-800">Verpackungs-Maße an Bogachan senden</p>
-                                <p class="text-sm text-stone-500">Kunden-Nachricht versenden (Fotos von allen Seiten + exakte Maße in mm) für Etiketten-Start.</p>
+                                <p class="text-sm text-stone-500">Kunden-Nachricht versenden (Fotos von allen Seiten +
+                                    exakte Maße in mm) für Etiketten-Start.</p>
                             </div>
                         </li>
-                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition" onclick="toggleTask(this)">
-                            <div class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">✓</div>
+                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition"
+                            onclick="toggleTask(this)">
+                            <div
+                                class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">
+                                ✓</div>
                             <div>
                                 <p class="font-bold text-stone-800">Zertifikate & Zulassungen klären</p>
-                                <p class="text-sm text-stone-500">Prüfen: Braucht die Seife/Öl aus der Türkei eine CPNP Meldung? (Antwort: JA. Sicherheitsbewerter kontaktieren).</p>
+                                <p class="text-sm text-stone-500">Prüfen: Braucht die Seife/Öl aus der Türkei eine CPNP
+                                    Meldung? (Antwort: JA. Sicherheitsbewerter kontaktieren).</p>
                             </div>
                         </li>
-                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition" onclick="toggleTask(this)">
-                            <div class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">✓</div>
+                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition"
+                            onclick="toggleTask(this)">
+                            <div
+                                class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">
+                                ✓</div>
                             <div>
                                 <p class="font-bold text-stone-800">Verpackungen in China sourcen</p>
-                                <p class="text-sm text-stone-500">Recherche nach kostengünstigen Verpackungen (Tiegel, Fläschchen) durchführen.</p>
+                                <p class="text-sm text-stone-500">Recherche nach kostengünstigen Verpackungen (Tiegel,
+                                    Fläschchen) durchführen.</p>
                             </div>
                         </li>
-                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition" onclick="toggleTask(this)">
-                            <div class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">✓</div>
+                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition"
+                            onclick="toggleTask(this)">
+                            <div
+                                class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">
+                                ✓</div>
                             <div>
                                 <p class="font-bold text-stone-800">Baum-Logo überarbeiten</p>
-                                <p class="text-sm text-stone-500">Das "rundere" Baum-Logo vom alten Design übernehmen und an die neue Ästhetik anpassen.</p>
+                                <p class="text-sm text-stone-500">Das "rundere" Baum-Logo vom alten Design übernehmen
+                                    und an die neue Ästhetik anpassen.</p>
                             </div>
                         </li>
-                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition" onclick="toggleTask(this)">
-                            <div class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">✓</div>
+                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition"
+                            onclick="toggleTask(this)">
+                            <div
+                                class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">
+                                ✓</div>
                             <div>
                                 <p class="font-bold text-stone-800">Steuerberater (E-Commerce) finden</p>
                                 <p class="text-sm text-stone-500">Suchen für die geplante Geschäftsanmeldung im Mai.</p>
                             </div>
                         </li>
-                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition" onclick="toggleTask(this)">
-                            <div class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">✓</div>
+                        <li class="p-4 flex items-center hover:bg-stone-50 cursor-pointer transition"
+                            onclick="toggleTask(this)">
+                            <div
+                                class="w-6 h-6 rounded border border-stone-300 mr-4 flex items-center justify-center check-box text-transparent">
+                                ✓</div>
                             <div>
                                 <p class="font-bold text-stone-800">Shop bauen & Produkte einpflegen</p>
                                 <p class="text-sm text-stone-500">Sobald Bilder und Etiketten final sind.</p>
@@ -330,7 +455,8 @@
 
     <footer class="bg-stone-900 text-stone-400 py-8 text-center text-sm">
         <p>Sunnahliebe Launch-Dashboard. Basierend auf Besprechungsnotizen vom 05.03.2026.</p>
-        <p class="mt-2 text-xs">Hinweis: Diese Web-App bietet erste rechtliche Einschätzungen, ersetzt jedoch keine verbindliche Rechtsberatung durch einen Fachanwalt für Kosmetikrecht.</p>
+        <p class="mt-2 text-xs">Hinweis: Diese Web-App bietet erste rechtliche Einschätzungen, ersetzt jedoch keine
+            verbindliche Rechtsberatung durch einen Fachanwalt für Kosmetikrecht.</p>
     </footer>
 
     <script>
@@ -342,23 +468,23 @@
             });
             // Show target
             document.getElementById('sec-' + sectionId).classList.remove('section-hidden');
-            
+
             // Update active state in desktop nav
             document.querySelectorAll('.nav-btn').forEach(el => {
                 el.classList.remove('nav-active', 'text-teal-600');
                 el.classList.add('text-gray-500');
             });
             const activeBtn = document.getElementById('nav-' + sectionId);
-            if(activeBtn) {
+            if (activeBtn) {
                 activeBtn.classList.add('nav-active');
                 activeBtn.classList.remove('text-gray-500');
             }
 
             // Close mobile menu if open
             document.getElementById('mobile-menu').classList.add('hidden');
-            
+
             // Re-render charts if navigating to dashboard to ensure proper sizing
-            if(sectionId === 'dashboard') {
+            if (sectionId === 'dashboard') {
                 renderCharts();
             }
         }
@@ -423,21 +549,20 @@
         const complianceContainer = document.getElementById('product-compliance-list');
         productsData.forEach(prod => {
             const card = document.createElement('div');
-            card.className = \`bg-white p-5 rounded-xl shadow-sm border border-stone-100 status-\${prod.status}\`;
-            card.innerHTML = \`
+            card.className = `bg-white p-5 rounded-xl shadow-sm border border-stone-100 status-${prod.status}`;
+            card.innerHTML = `
                 <div class="flex justify-between items-start">
                     <div>
-                        <h4 class="font-bold text-lg text-stone-800">\${prod.name} <span class="text-xs text-stone-500 font-normal ml-2">Herkunft: \${prod.origin}</span></h4>
-                        <span class="inline-block mt-1 px-2 py-1 bg-stone-100 text-stone-600 text-xs rounded">\${prod.category}</span>
+                        <h4 class="font-bold text-lg text-stone-800">${prod.name} <span class="text-xs text-stone-500 font-normal ml-2">Herkunft: ${prod.origin}</span></h4>
+                        <span class="inline-block mt-1 px-2 py-1 bg-stone-100 text-stone-600 text-xs rounded">${prod.category}</span>
                     </div>
-                    <div class="px-3 py-1 rounded-full text-sm font-bold \${
-                        prod.status === 'green' ? 'bg-green-100 text-green-700' : 
-                        prod.status === 'yellow' ? 'bg-yellow-100 text-yellow-700' : 
+                    <div class="px-3 py-1 rounded-full text-sm font-bold ${prod.status === 'green' ? 'bg-green-100 text-green-700' :
+                    prod.status === 'yellow' ? 'bg-yellow-100 text-yellow-700' :
                         'bg-red-100 text-red-700'
-                    }">\${prod.verdict}</div>
+                }">${prod.verdict}</div>
                 </div>
-                <p class="mt-3 text-sm text-stone-600">\${prod.details}</p>
-            \`;
+                <p class="mt-3 text-sm text-stone-600">${prod.details}</p>
+            `;
             complianceContainer.appendChild(card);
         });
 
@@ -454,13 +579,13 @@
         function showLabelInfo(key) {
             const panel = document.getElementById('label-info-panel');
             const info = labelInfos[key];
-            panel.innerHTML = \`
-                <h3 class="text-xl font-bold text-teal-900 mb-2">\${info.title}</h3>
-                <p class="text-teal-800">\${info.text}</p>
+            panel.innerHTML = `
+                <h3 class="text-xl font-bold text-teal-900 mb-2">${info.title}</h3>
+                <p class="text-teal-800">${info.text}</p>
                 <div class="mt-4 pt-4 border-t border-teal-200">
                     <span class="text-xs text-teal-700 uppercase tracking-wider font-bold">Pflichtangabe nach EU-KosmetikVO</span>
                 </div>
-            \`;
+            `;
             // Add slight animation
             panel.classList.remove('animate-fade-in');
             void panel.offsetWidth; // trigger reflow
@@ -471,7 +596,7 @@
         let completedTasks = 0;
         function toggleTask(element) {
             const checkbox = element.querySelector('.check-box');
-            if(checkbox.classList.contains('text-transparent')) {
+            if (checkbox.classList.contains('text-transparent')) {
                 checkbox.classList.remove('text-transparent');
                 checkbox.classList.add('bg-teal-500', 'text-white', 'border-teal-500');
                 element.classList.add('opacity-50', 'line-through');
@@ -482,7 +607,7 @@
                 element.classList.remove('opacity-50', 'line-through');
                 completedTasks--;
             }
-            document.getElementById('task-counter').innerText = \`\${completedTasks}/6 Erledigt\`;
+            document.getElementById('task-counter').innerText = `${completedTasks}/6 Erledigt`;
         }
 
 
@@ -493,9 +618,9 @@
         function renderCharts() {
             // Chart 1: Effort (Bar Chart)
             const ctxEffort = document.getElementById('effortChart').getContext('2d');
-            
-            if(effortChartInstance) effortChartInstance.destroy();
-            
+
+            if (effortChartInstance) effortChartInstance.destroy();
+
             effortChartInstance = new Chart(ctxEffort, {
                 type: 'bar',
                 data: {
@@ -530,9 +655,9 @@
                         legend: { display: false },
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
-                                    if(context.raw > 7) return "Zertifizierung zwingend!";
-                                    if(context.raw > 3) return "Beratung empfohlen";
+                                label: function (context) {
+                                    if (context.raw > 7) return "Zertifizierung zwingend!";
+                                    if (context.raw > 3) return "Beratung empfohlen";
                                     return "Einfacher Start";
                                 }
                             }
@@ -546,8 +671,8 @@
 
             // Chart 2: Categories (Doughnut Chart)
             const ctxCat = document.getElementById('categoryChart').getContext('2d');
-            
-            if(categoryChartInstance) categoryChartInstance.destroy();
+
+            if (categoryChartInstance) categoryChartInstance.destroy();
 
             categoryChartInstance = new Chart(ctxCat, {
                 type: 'doughnut',
@@ -586,7 +711,7 @@
             renderCharts();
             // Handle simple animations
             const style = document.createElement('style');
-            style.innerHTML = \`
+            style.innerHTML = `
                 @keyframes fadeIn {
                     from { opacity: 0; transform: translateY(10px); }
                     to { opacity: 1; transform: translateY(0); }
@@ -594,10 +719,11 @@
                 .animate-fade-in {
                     animation: fadeIn 0.4s ease-out forwards;
                 }
-            \`;
+            `;
             document.head.appendChild(style);
         };
 
     </script>
 </body>
+
 </html>
